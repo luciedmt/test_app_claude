@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2116,23 +2117,28 @@
 
     }
 
-    // Auto fullscreen on mobile on first interaction
-
-    document.addEventListener('click', () => {
-
+    // ✅ AUTO FULLSCREEN ON APP LAUNCH (No click needed)
+    window.addEventListener('load', () => {
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-
         enterFullscreen();
-
       }
+    });
 
-    }, { once: true });
+    // Maintain fullscreen when page becomes visible
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          enterFullscreen();
+        }
+      }
+    });
 
-   document.addEventListener('click', () => {
-     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-       enterFullscreen();
-     }
-   }, { once: true });  // { once: true } = Only fires ONCE
+    // Maintain fullscreen when window is focused
+    window.addEventListener('focus', () => {
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        enterFullscreen();
+      }
+    });
 
 
     app.showGoodbye = function() {
@@ -2143,6 +2149,7 @@
 
       setTimeout(() => {
 
+        // ✅ EXIT FULLSCREEN when quitting app
         exitFullscreen();
 
         // Close app after 3 seconds
@@ -2159,14 +2166,21 @@
 
     app.closeApp = function() {
 
+      // ✅ EXIT FULLSCREEN when closing app
       exitFullscreen();
 
-      // Redirect or close
+      // Show goodbye screen first
+      const goodbyeScreen = document.getElementById('goodbyeScreen');
+      goodbyeScreen.style.display = 'flex';
 
-      window.location.reload();
+      // Reload after goodbye message
+      setTimeout(() => {
+
+        window.location.reload();
+
+      }, 3000);
 
     };
 </script>
 </body>
 </html>
- 
