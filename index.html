@@ -69,8 +69,8 @@
       /*padding-top: max(8px, env(safe-area-inset-top));
       padding-bottom: max(8px, env(safe-area-inset-bottom));*/
 
-     /* padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);*/
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     
       background: #282431;
    }
@@ -1982,23 +1982,28 @@
       updateViewportHeight
     );
 
-    window.addEventListener('load', () => {
-   
-     updateViewportHeight();
-   
-     setTimeout(updateViewportHeight, 100);
-     setTimeout(updateViewportHeight, 500);
-     setTimeout(updateViewportHeight, 1000);
-   
-     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-       enterFullscreen();
-     }
-   
-     console.log('LOAD');
-     console.log('innerHeight:', window.innerHeight);
-     console.log('visualViewport:', window.visualViewport?.height);
-   
-   });
+     window.addEventListener('load', () => {
+     
+       updateViewportHeight();
+     
+       setTimeout(() => {
+         updateViewportHeight();
+     
+         document
+           .querySelector('.app-container')
+           ?.style.setProperty('display', 'none');
+     
+         requestAnimationFrame(() => {
+     
+           document
+             .querySelector('.app-container')
+             ?.style.setProperty('display', 'flex');
+     
+         });
+     
+       }, 500);
+     
+     });
 
     app.showGoodbye = function() {
 
