@@ -1226,16 +1226,20 @@
     app.closeApp = function() {
       // ✅ EXIT FULLSCREEN when closing app
       exitFullscreen();
+
       // Show goodbye screen first
       const goodbyeScreen = document.getElementById('goodbyeScreen');
       goodbyeScreen.style.display = 'flex';
+
       // Reload after goodbye message
       setTimeout(() => {
         window.location.reload();
       }, 3000);
     };
-    
-<div id="debugHeight"></div>
+
 </script>
+
+<div id="debugHeight"></div>
+
 </body>
 </html>
