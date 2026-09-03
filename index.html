@@ -58,22 +58,21 @@
     /* Handle mobile viewport height properly */
 
    .app-container {
-      width: 100%;
-      height: 100dvh;
-      
-      display: flex;
-      flex-direction: column;
-      
-      overflow: hidden;
-      
+     width: 100%;
+     height: var(--app-height);
+
+     display: flex;
+     flex-direction: column;
+
+     overflow: hidden;
+
       /*padding-top: max(8px, env(safe-area-inset-top));
       padding-bottom: max(8px, env(safe-area-inset-bottom));*/
 
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-      background:red !important;
-      
-      /*background: #282431;*/
+     /* padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);*/
+    
+      background: #282431;
    }
          
 
@@ -1741,6 +1740,9 @@
 
     };
 
+
+ 
+
     function triggerHeartFirework() {
 
       const container = document.getElementById('heartFireworkContainer');
@@ -1960,12 +1962,26 @@
 
     }
 
+    function updateViewportHeight() {
+     document.documentElement.style.setProperty(
+       '--app-height',
+       `${window.innerHeight}px`
+     );
+   }
+   
+   window.addEventListener('resize', updateViewportHeight);
+   window.addEventListener('orientationchange', updateViewportHeight);
+   
+    //updateViewportHeight();
+
+
+ 
     // ✅ AUTO FULLSCREEN ON APP LAUNCH (No click needed)
-    window.addEventListener('load', () => {
+   /* window.addEventListener('load', () => {
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         enterFullscreen();
       }
-    });
+    });*/
 
     /*// Maintain fullscreen when page becomes visible
     document.addEventListener('visibilitychange', () => {
@@ -1983,7 +1999,7 @@
       }
     });
 */
-    window.addEventListener('load', () => {
+   /* window.addEventListener('load', () => {
       console.log('LOAD');
       console.log('innerHeight:', window.innerHeight);
       console.log('visualViewport:', window.visualViewport?.height);
@@ -1993,8 +2009,25 @@
       console.log('RESIZE');
       console.log('innerHeight:', window.innerHeight);
       console.log('visualViewport:', window.visualViewport?.height);
-    });
+    });*/
+
+
+    window.addEventListener('load', () => {
    
+     updateViewportHeight();
+   
+     setTimeout(updateViewportHeight, 100);
+     setTimeout(updateViewportHeight, 500);
+   
+     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+       enterFullscreen();
+     }
+   
+     console.log('LOAD');
+     console.log('innerHeight:', window.innerHeight);
+     console.log('visualViewport:', window.visualViewport?.height);
+   
+   });
 
     app.showGoodbye = function() {
 
