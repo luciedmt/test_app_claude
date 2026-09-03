@@ -18,12 +18,15 @@
         padding: 0;
         box-sizing: border-box;
       }  
-      html,
-      body {
+    html,
+    body {
         width: 100%;
-        height: 100%;
+        height: 100dvh;
+        min-height: 100dvh;
+        margin: 0;
+        padding: 0;
         overflow: hidden;
-      }
+    }
       body {
         background: #282431;
         color: #fff;
@@ -31,15 +34,15 @@
       }
     /* Handle mobile viewport height properly */
    .app-container {
-     width: 100%;
-     height: 100dvh;
-     height: var(--app-height, 100dvh);
-     display: flex;
-     flex-direction: column;
-     overflow: hidden;
-    /* padding-top: env(safe-area-inset-top);
-     padding-bottom: env(safe-area-inset-bottom);*/
-     background: #282431;
+        width: 100%;
+        height: 100dvh;
+        min-height: 100dvh;
+        height: var(--app-height, 100dvh);
+        
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: #282431;
     }
     /* Support dynamic viewport height for mobile */
     .goodbye-message {
@@ -1138,18 +1141,21 @@
       }
     }
 
-   function updateViewportHeight() {
+    function updateViewportHeight() {
         const vv = window.visualViewport;
+        const height = vv ? vv.height : window.innerHeight;
     
-        const innerHeight = window.innerHeight;
-        const clientHeight = document.documentElement.clientHeight;
-        const visualHeight = vv ? vv.height : 'N/A';
+        // Définit la hauteur de l'application
+        document.documentElement.style.setProperty(
+            '--app-height',
+            `${height}px`
+        );
     
+        // DEBUG
+        const debug = document.getElementById('debugHeight');
         const app = document.querySelector('.app-container');
         const screen = document.querySelector('.screen-content');
         const keyboard = document.querySelector('.keyboard');
-    
-        const debug = document.getElementById("debugHeight");
     
         if (debug && app && screen && keyboard) {
             const appRect = app.getBoundingClientRect();
@@ -1158,9 +1164,10 @@
     
             debug.innerHTML = `
                 VIEWPORT<br>
-                innerHeight = ${innerHeight}px<br>
-                clientHeight = ${clientHeight}px<br>
-                visualViewport = ${visualHeight}px<br><br>
+                innerHeight = ${window.innerHeight}px<br>
+                clientHeight = ${document.documentElement.clientHeight}px<br>
+                visualViewport = ${vv ? vv.height : 'N/A'}px<br>
+                CSS height = ${getComputedStyle(app).height}<br><br>
     
                 APP<br>
                 height = ${appRect.height}px<br>
@@ -1178,44 +1185,15 @@
                 bottom = ${keyboardRect.bottom}px
             `;
         }
-    
-        const height = vv?.height || innerHeight;
-    
-        document.documentElement.style.setProperty(
-            '--app-height',
-            `${height}px`
-        );
     }
-
-updateViewportHeight();
-
-window.addEventListener('resize', updateViewportHeight);
-window.addEventListener('orientationchange', updateViewportHeight);
-
-if (window.visualViewport) {
-    window.visualViewport.addEventListener(
-        'resize',
-        updateViewportHeight
-    );
-}
     
     // Initialisation
     updateViewportHeight();
     
-    // Recalcul après le rendu
-    requestAnimationFrame(() => {
-        updateViewportHeight();
-    });
+    // Recalcul après le premier rendu
+    requestAnimationFrame(updateViewportHeight);
     
-    setTimeout(() => {
-        updateViewportHeight();
-    }, 100);
-    
-    setTimeout(() => {
-        updateViewportHeight();
-    }, 500);
-    
-    // Changements du viewport
+    // Événements
     window.addEventListener('resize', updateViewportHeight);
     window.addEventListener('orientationchange', updateViewportHeight);
     
@@ -1256,7 +1234,8 @@ if (window.visualViewport) {
         window.location.reload();
       }, 3000);
     };
-</script>
+    
 <div id="debugHeight"></div>
+</script>
 </body>
 </html>
