@@ -1963,54 +1963,24 @@
     }
 
     function updateViewportHeight() {
-     document.documentElement.style.setProperty(
-       '--app-height',
-       `${window.innerHeight}px`
-     );
-   }
-   
-   window.addEventListener('resize', updateViewportHeight);
-   window.addEventListener('orientationchange', updateViewportHeight);
-   
-    //updateViewportHeight();
 
-
- 
-    // ✅ AUTO FULLSCREEN ON APP LAUNCH (No click needed)
-   /* window.addEventListener('load', () => {
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        enterFullscreen();
-      }
-    });*/
-
-    /*// Maintain fullscreen when page becomes visible
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-          enterFullscreen();
-        }
-      }
-    });
-
-    // Maintain fullscreen when window is focused
-    window.addEventListener('focus', () => {
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        enterFullscreen();
-      }
-    });
-*/
-   /* window.addEventListener('load', () => {
-      console.log('LOAD');
-      console.log('innerHeight:', window.innerHeight);
-      console.log('visualViewport:', window.visualViewport?.height);
-    });
-   
-    window.addEventListener('resize', () => {
-      console.log('RESIZE');
-      console.log('innerHeight:', window.innerHeight);
-      console.log('visualViewport:', window.visualViewport?.height);
-    });*/
-
+      const height =
+        window.visualViewport?.height ||
+        window.innerHeight;
+    
+      document.documentElement.style.setProperty(
+        '--app-height',
+        `${height}px`
+      );
+    }
+    
+    window.addEventListener('resize', updateViewportHeight);
+    window.addEventListener('orientationchange', updateViewportHeight);
+    
+    window.visualViewport?.addEventListener(
+      'resize',
+      updateViewportHeight
+    );
 
     window.addEventListener('load', () => {
    
@@ -2018,6 +1988,7 @@
    
      setTimeout(updateViewportHeight, 100);
      setTimeout(updateViewportHeight, 500);
+     setTimeout(updateViewportHeight, 1000);
    
      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
        enterFullscreen();
