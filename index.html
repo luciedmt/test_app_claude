@@ -24,7 +24,7 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        overflow: auto;
+        overflow: hidden;
     }
       body {
         background: #282431;
@@ -1142,7 +1142,7 @@
       }
     }
 
-    function updateViewportHeight() {
+   /* function updateViewportHeight() {
         const vv = window.visualViewport;
         const height = vv ? vv.height : window.innerHeight;
     
@@ -1223,7 +1223,7 @@
         if (!document.hidden) {
             updateViewportHeight();
         }
-    });
+    });*/
 
     app.showGoodbye = function() {
       const goodbyeScreen = document.getElementById('goodbyeScreen');
