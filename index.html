@@ -32,16 +32,15 @@
     /* Handle mobile viewport height properly */
    .app-container {
      width: 100%;
-     height: var(--app-height);
+     height: 100dvh;
+     height: var(--app-height, 100dvh);
      display: flex;
      flex-direction: column;
      overflow: hidden;
-      /*padding-top: max(8px, env(safe-area-inset-top));
-      padding-bottom: max(8px, env(safe-area-inset-bottom));*/
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-      background: #282431;
-   }
+     padding-top: env(safe-area-inset-top);
+     padding-bottom: env(safe-area-inset-bottom);
+     background: #282431;
+    }
     /* Support dynamic viewport height for mobile */
     .goodbye-message {
       position: fixed;
@@ -1125,40 +1124,54 @@
       }
     }
 
-   function updateViewportHeight() {
-     const height =
-       window.visualViewport?.height ||
-       window.innerHeight;
-      const debug = document.getElementById("debugHeight");
-      if (debug) {
-          debug.textContent = `HEIGHT=${height}`;
-      }
-     document.documentElement.style.setProperty(
-       '--app-height',
-       `${height}px`
-     );
-   }
+    function updateViewportHeight() {
+        const height =
+            window.visualViewport?.height ||
+            window.innerHeight;
+    
+        const debug = document.getElementById("debugHeight");
+    
+        if (debug) {
+            debug.textContent = `HEIGHT=${height}`;
+        }
+    
+        document.documentElement.style.setProperty(
+            '--app-height',
+            `${height}px`
+        );
+    }
+    
+    // Initialisation
+    updateViewportHeight();
+    
+    // Recalcul après le rendu
+    requestAnimationFrame(() => {
+        updateViewportHeight();
+    });
+    
+    setTimeout(() => {
+        updateViewportHeight();
+    }, 100);
+    
+    setTimeout(() => {
+        updateViewportHeight();
+    }, 500);
+    
+    // Changements du viewport
     window.addEventListener('resize', updateViewportHeight);
     window.addEventListener('orientationchange', updateViewportHeight);
+    
     window.visualViewport?.addEventListener(
-      'resize',
-      updateViewportHeight
+        'resize',
+        updateViewportHeight
     );
-
+    
     window.addEventListener('pageshow', updateViewportHeight);
+    
     document.addEventListener('visibilitychange', () => {
-       if (!document.hidden) {
-        updateViewportHeight();
-    }
-});
-
-    window.addEventListener('load', () => {
-      updateViewportHeight();
-      setTimeout(updateViewportHeight, 100);
-      setTimeout(() => {
-        updateViewportHeight();
-        render();
-      }, 500);
+        if (!document.hidden) {
+            updateViewportHeight();
+        }
     });
 
     app.showGoodbye = function() {
