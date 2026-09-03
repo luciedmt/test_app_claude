@@ -619,6 +619,17 @@
      width: min(600px, 100%);
      text-align: center;
    }
+
+   #debugHeight {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 99999;
+    background: red;
+    color: white;
+    padding: 4px;
+  }
+
    
 </style>
 </head>
@@ -1962,17 +1973,20 @@
 
     }
 
-    function updateViewportHeight() {
+   function updateViewportHeight() {
 
-      const height =
-        window.visualViewport?.height ||
-        window.innerHeight;
+     const height =
+       window.visualViewport?.height ||
+       window.innerHeight;
+   
+    document.getElementById("debugHeight").textContent =
+      "HEIGHT=" + height;
     
-      document.documentElement.style.setProperty(
-        '--app-height',
-        `${height}px`
-      );
-    }
+     document.documentElement.style.setProperty(
+       '--app-height',
+       `${height}px`
+     );
+   }
     
     window.addEventListener('resize', updateViewportHeight);
     window.addEventListener('orientationchange', updateViewportHeight);
@@ -2046,5 +2060,6 @@
 
     };
 </script>
+<div id="debugHeight"></div>
 </body>
 </html>
