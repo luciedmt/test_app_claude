@@ -106,14 +106,15 @@
     }
 
    .screen-content {
-     flex: 0 0 42%;
-     overflow-y: auto;
-     padding: clamp(12px, 2vw, 24px);
-     background: #000;
-     border: 5px solid #222;
-     border-radius: 12px;
-     -webkit-overflow-scrolling: touch;
-   }
+        flex: 0 0 42%;
+        min-height: 0;
+        overflow-y: auto;
+        padding: clamp(12px, 2vw, 24px);
+        background: #000;
+        border: 5px solid #222;
+        border-radius: 12px;
+        -webkit-overflow-scrolling: touch;
+    }
     .content-text {
       background: #000;
       border: 2px solid #000;
@@ -1124,20 +1125,44 @@
       }
     }
 
-    function updateViewportHeight() {
+   function updateViewportHeight() {
         const vv = window.visualViewport;
     
         const innerHeight = window.innerHeight;
         const clientHeight = document.documentElement.clientHeight;
         const visualHeight = vv ? vv.height : 'N/A';
     
+        const app = document.querySelector('.app-container');
+        const screen = document.querySelector('.screen-content');
+        const keyboard = document.querySelector('.keyboard');
+    
         const debug = document.getElementById("debugHeight");
     
-        if (debug) {
+        if (debug && app && screen && keyboard) {
+            const appRect = app.getBoundingClientRect();
+            const screenRect = screen.getBoundingClientRect();
+            const keyboardRect = keyboard.getBoundingClientRect();
+    
             debug.innerHTML = `
-                innerHeight = ${innerHeight}<br>
-                clientHeight = ${clientHeight}<br>
-                visualViewport = ${visualHeight}
+                VIEWPORT<br>
+                innerHeight = ${innerHeight}px<br>
+                clientHeight = ${clientHeight}px<br>
+                visualViewport = ${visualHeight}px<br><br>
+    
+                APP<br>
+                height = ${appRect.height}px<br>
+                top = ${appRect.top}px<br>
+                bottom = ${appRect.bottom}px<br><br>
+    
+                SCREEN<br>
+                height = ${screenRect.height}px<br>
+                top = ${screenRect.top}px<br>
+                bottom = ${screenRect.bottom}px<br><br>
+    
+                KEYBOARD<br>
+                height = ${keyboardRect.height}px<br>
+                top = ${keyboardRect.top}px<br>
+                bottom = ${keyboardRect.bottom}px
             `;
         }
     
