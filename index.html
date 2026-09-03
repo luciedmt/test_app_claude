@@ -25,83 +25,40 @@
         height: 100%;
       }
       
-      body {
+     body {
         min-height: 100dvh;
         background: #282431;
         color: #fff;
         font-family: 'Space Mono', monospace;
         overflow: hidden;
-      
-        /* évite les zones masquées par iPhone */
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
-      
         margin: 0;
       }
 
     /* Handle mobile viewport height properly */
 
-    @supports (height: 100dvh) {
-
-      html, body {
-
-        height: 100dvh;
-
-      }
-
+   
     }
-   .footer {
-     position: fixed;
-     bottom: 0;
-     left: 0;
-     width: 100%;
-     height: 30px;
-     background: #111;
-     border-top: 1px solid #333;
-   }
 
    .app-container {
-     width: 100%;
-     height: 100dvh;
-   
-     display: flex;
-     flex-direction: column;
-   
-     overflow: hidden;
-   
-     padding:
-       env(safe-area-inset-top)
-       0
-       env(safe-area-inset-bottom)
-       0;
-   
-     background: #282431;
-   }
+      width: 100%;
+      height: 100dvh;
       
+      display: flex;
+      flex-direction: column;
+      
+      overflow: hidden;
+      
+      /*padding-top: max(8px, env(safe-area-inset-top));
+      padding-bottom: max(8px, env(safe-area-inset-bottom));*/
+
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      
+      background: #282431;
+   }
+         
 
     /* Support dynamic viewport height for mobile */
-
-    @supports (height: 100dvh) {
-
-      .app-container {
-
-        height: 100dvh;
-
-        min-height: 100dvh;
-
-      }
-
-    }
-
-    body, html {
-
-      width: 100%;
-
-      height: 100%;
-
-      overflow: hidden;
-
-    }
 
     .goodbye-message {
 
@@ -277,20 +234,7 @@
    
      min-height: 0;
    }
-    /* Responsive design for small phones (320px - 380px) */
 
-   /* @media (max-height: 380px) { */
-    
-
-      
-
-    /* Responsive design for medium phones (600px - 800px) */
-
-    
-
-    /* Responsive design for larger phones and tablets (800px+) */
-
- 
     .key-btn {
 
       background: #282431;
