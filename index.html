@@ -1185,6 +1185,20 @@
                 bottom = ${keyboardRect.bottom}px
             `;
         }
+    
+        // 🔧 Force Chrome à refaire un repaint/reflow du conteneur
+        requestAnimationFrame(() => {
+            const app = document.querySelector('.app-container');
+    
+            if (app) {
+                app.style.display = 'none';
+    
+                // Force le navigateur à recalculer le layout
+                void app.offsetHeight;
+    
+                app.style.display = 'flex';
+            }
+        });
     }
     
     // Initialisation
