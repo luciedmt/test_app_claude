@@ -645,6 +645,28 @@
       margin-top: 8px;
 
     }
+
+   .email-page .screen-content {
+     flex: 75%;
+   
+     display: flex;
+     justify-content: center;
+     align-items: center;
+   }
+   
+   .email-page .keyboard {
+     flex: 25%;
+   }
+   
+   .email-page .content-text {
+     width: min(600px, 100%);
+   }
+
+   .email-page .content-text {
+     width: min(600px, 100%);
+     text-align: center;
+   }
+   
 </style>
 </head>
 <body>
@@ -1928,6 +1950,11 @@
           break;
 
       }
+
+      document.body.classList.toggle(
+       'email-page',
+        app.currentPage === 'email'
+      );
 
       contentText.innerHTML = html;
 
