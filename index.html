@@ -1125,21 +1125,41 @@
     }
 
     function updateViewportHeight() {
-        const height =
-            window.visualViewport?.height ||
-            window.innerHeight;
+        const vv = window.visualViewport;
+    
+        const innerHeight = window.innerHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const visualHeight = vv ? vv.height : 'N/A';
     
         const debug = document.getElementById("debugHeight");
     
         if (debug) {
-            debug.textContent = `HEIGHT=${height}`;
+            debug.innerHTML = `
+                innerHeight = ${innerHeight}<br>
+                clientHeight = ${clientHeight}<br>
+                visualViewport = ${visualHeight}
+            `;
         }
+    
+        const height = vv?.height || innerHeight;
     
         document.documentElement.style.setProperty(
             '--app-height',
             `${height}px`
         );
     }
+
+updateViewportHeight();
+
+window.addEventListener('resize', updateViewportHeight);
+window.addEventListener('orientationchange', updateViewportHeight);
+
+if (window.visualViewport) {
+    window.visualViewport.addEventListener(
+        'resize',
+        updateViewportHeight
+    );
+}
     
     // Initialisation
     updateViewportHeight();
