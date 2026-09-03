@@ -34,7 +34,7 @@
     /* Handle mobile viewport height properly */
    .app-container {
         width: 100%;
-        height: var(--app-height);
+        height: var(--app-height, 100dvh);
     
         display: flex;
         flex-direction: column;
@@ -110,7 +110,7 @@
     }
 
    .screen-content {
-        flex: 0 0 42%;
+        flex: 42 1 0;
         min-height: 0;
         overflow-y: auto;
         padding: clamp(12px, 2vw, 24px);
@@ -132,7 +132,7 @@
     }
 
    .keyboard {
-     flex: 0 0 58%;
+      flex: 58 1 0;
      display: grid;
      grid-template-columns: repeat(3, 1fr);
      grid-template-rows: repeat(3, minmax(0, 1fr));
@@ -205,7 +205,7 @@
       background: #282431;
       border-color: #aaa;
       color: #ffffff;
-      font-size: clamp(38px, 5vw, 24px);
+      font-size: clamp(24px, 5vw, 38px);
     }
 
     .key-btn.heart-unselected:hover {
@@ -218,7 +218,7 @@
       color: #ffffff;
       background: #282431;
       box-shadow: 10px 10px 20px rgba(255, 85, 85, 0.6), 0 0 40px rgba(255, 85, 85, 0.5), inset 0 0 15px rgba(255, 85, 85, 0.2);
-      font-size: clamp(38px, 5vw, 24px);
+      font-size: clamp(24px, 5vw, 38px);
       font-weight: 800;
     }
 
@@ -1132,77 +1132,17 @@
         const vv = window.visualViewport;
         const height = vv ? vv.height : window.innerHeight;
     
-        // Définit la hauteur de l'application
         document.documentElement.style.setProperty(
             '--app-height',
             `${height}px`
         );
-    
-        // DEBUG
-        const debug = document.getElementById('debugHeight');
-        const app = document.querySelector('.app-container');
-        const screen = document.querySelector('.screen-content');
-        const keyboard = document.querySelector('.keyboard');
-    
-        if (debug && app && screen && keyboard) {
-            const appRect = app.getBoundingClientRect();
-            const screenRect = screen.getBoundingClientRect();
-            const keyboardRect = keyboard.getBoundingClientRect();
-    
-            debug.innerHTML = `
-                VIEWPORT<br>
-                innerHeight = ${window.innerHeight}px<br>
-                clientHeight = ${document.documentElement.clientHeight}px<br>
-                visualViewport = ${vv ? vv.height : 'N/A'}px<br>
-                CSS height = ${getComputedStyle(app).height}<br><br>
-    
-                APP<br>
-                height = ${appRect.height}px<br>
-                top = ${appRect.top}px<br>
-                bottom = ${appRect.bottom}px<br><br>
-    
-                SCREEN<br>
-                height = ${screenRect.height}px<br>
-                top = ${screenRect.top}px<br>
-                bottom = ${screenRect.bottom}px<br><br>
-    
-                KEYBOARD<br>
-                height = ${keyboardRect.height}px<br>
-                top = ${keyboardRect.top}px<br>
-                bottom = ${keyboardRect.bottom}px
-            `;
-        }
-    
-        // 🔧 Force Chrome à refaire un repaint/reflow du conteneur
-        requestAnimationFrame(() => {
-            const app = document.querySelector('.app-container');
-    
-            if (app) {
-                app.style.display = 'none';
-    
-                // Force le navigateur à recalculer le layout
-                void app.offsetHeight;
-    
-                app.style.display = 'flex';
-            }
-        });
     }
     
-    // Initialisation
     updateViewportHeight();
-    
-    // Recalcul après le premier rendu
-    requestAnimationFrame(updateViewportHeight);
-    
-    // Événements
+
     window.addEventListener('resize', updateViewportHeight);
     window.addEventListener('orientationchange', updateViewportHeight);
-    
-    window.visualViewport?.addEventListener(
-        'resize',
-        updateViewportHeight
-    );
-    
+    window.visualViewport?.addEventListener('resize', updateViewportHeight);
     window.addEventListener('pageshow', updateViewportHeight);
     
     document.addEventListener('visibilitychange', () => {
@@ -1211,6 +1151,9 @@
         }
     });
 
+
+
+    
     app.showGoodbye = function() {
       const goodbyeScreen = document.getElementById('goodbyeScreen');
       goodbyeScreen.style.display = 'flex';
