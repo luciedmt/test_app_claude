@@ -1103,12 +1103,7 @@
       contentText.innerHTML = html;
       renderKeyboard();
     }
-    if (app.email) {
-      app.currentPage = 'home';
-    } else {
-      app.currentPage = 'email';
-    }
-    render();
+   
  
     // Fullscreen functionality for mobile
     function enterFullscreen() {
@@ -1180,6 +1175,23 @@
         window.location.reload();
       }, 3000);
     };
+
+    if (app.email) {
+      app.currentPage = 'home';
+    } else {
+      app.currentPage = 'email';
+    }
+    
+    // Premier rendu
+    render();
+    
+    // Premier calcul du viewport
+    updateViewportHeight();
+    
+    // Recalcul après le premier layout
+    requestAnimationFrame(() => {
+      updateViewportHeight();
+    });
 
 </script>
 
