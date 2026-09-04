@@ -1178,20 +1178,28 @@
 
     };
 
-    app.toggleHeart = function(index) {
+   app.toggleHeart = async function(index) {
+
       playClickSound();
+    
       if (app.ratingHearts.includes(index)) {
-        app.ratingHearts = app.ratingHearts.filter(i => i !== index);
+        app.ratingHearts =
+          app.ratingHearts.filter(i => i !== index);
       } else {
         app.ratingHearts.push(index);
       }
-      localStorage.setItem('ratingHearts', JSON.stringify(app.ratingHearts));
-
-      // Check if all 6 hearts are selected
-
+    
+      localStorage.setItem(
+        'ratingHearts',
+        JSON.stringify(app.ratingHearts)
+      );
+    
+      await saveParticipant();
+    
       if (app.ratingHearts.length === 6) {
         triggerHeartFirework();
       }
+    
       render();
     };
  
