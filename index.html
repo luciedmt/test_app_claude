@@ -1070,45 +1070,48 @@
       localStorage.setItem('userEmail', email);
       goTo('home');
     };
+////////////////////////////////////////////////////////////////////////////////////////////////
+  app.bookDemo = async function() {
 
-    app.bookDemo = function() {
-      if (app.selectedTimeslot !== null && app.selectedDemoIndex !== null) {
-        const booking = { demoIndex: app.selectedDemoIndex, timeslotIndex: app.selectedTimeslot };
-        app.bookings.push(booking);
-        localStorage.setItem('bookings', JSON.stringify(app.bookings));
-        goTo('bookConfirm');
-      }
+  if (
+    app.selectedTimeslot !== null &&
+    app.selectedDemoIndex !== null
+  ) {
+
+    const booking = {
+      demoIndex: app.selectedDemoIndex,
+      timeslotIndex: app.selectedTimeslot
     };
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
     app.bookings.push(booking);
 
-        const { data, error } = await supabaseClient
-          .from('bookings')
-          .insert({
-            email: app.email,
-            demo_index: app.selectedDemoIndex,
-            timeslot_index: app.selectedTimeslot
-          })
-          .select();
+    const { data, error } = await supabaseClient
+      .from('bookings')
+      .insert({
+        email: app.email,
+        demo_index: app.selectedDemoIndex,
+        timeslot_index: app.selectedTimeslot
+      })
+      .select();
 
-        console.log("BOOKING DATA =", data);
-        console.log("BOOKING ERROR =", error);
+    console.log("BOOKING DATA =", data);
+    console.log("BOOKING ERROR =", error);
 
-        await saveParticipant();
-        localStorage.setItem(
-          'bookings',
-          JSON.stringify(app.bookings)
-        );
+    await saveParticipant();
 
-        app.lastBooking = {
-          demoIndex: app.selectedDemoIndex,
-          timeslotIndex: app.selectedTimeslot
-        };
-                
-        goTo('bookConfirm');
-      }
+    localStorage.setItem(
+      'bookings',
+      JSON.stringify(app.bookings)
+    );
+
+    app.lastBooking = {
+      demoIndex: app.selectedDemoIndex,
+      timeslotIndex: app.selectedTimeslot
     };
+
+    goTo('bookConfirm');
+  }
+};
  //////////////////////////////////////////////////////////////////////////////////////////////////////
  
     app.selectTimeslot = function(index) {
@@ -1175,7 +1178,7 @@
         container.innerHTML = '';
       }, 3000);
     }
-    app.nextQuestion = function() {
+   app.nextQuestion = async function() {
       if (app.selectedAnswer !== null) {
         app.quizAnswers[app.currentQuestion] = app.selectedAnswer;
         ///////////////////////////////////////////////////////////////////////////////////
