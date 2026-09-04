@@ -1257,6 +1257,25 @@
 
         /////////////////////////////////////////////////////////////////////////////////////
 
+
+     ///////////////////////////////////////////////////////////////////////ajout de la fonction pour envoyer le fichier ICS
+    function addToOutlook(demoName, startDate) {
+
+      const start = new Date(startDate);
+      const end = new Date(start.getTime() + 15 * 60000);
+    
+      const link =
+        "https://outlook.office.com/calendar/0/deeplink/compose?" +
+        "subject=" + encodeURIComponent(demoName) +
+        "&startdt=" + encodeURIComponent(start.toISOString()) +
+        "&enddt=" + encodeURIComponent(end.toISOString()) +
+        "&location=" + encodeURIComponent("Ruch std 56") +
+        "&body=" + encodeURIComponent("CarData DemoDays 2026");
+    
+      window.open(link, "_blank");
+    }
+    ///////////////////////////////////////////////////////////////////// Jusque la 
+
     function render() {
       if (app.email === '' && app.currentPage !== 'email') {
         app.currentPage = 'email';
