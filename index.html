@@ -877,7 +877,7 @@
             { isLogo: true, onClick: () => goTo('home') }
           );
           break;
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
         case 'demo':
           buttons.push(
             { label: CONTENT.demoPageInfo.location, onClick: () => {}, inactive: true },
@@ -890,8 +890,44 @@
             { isLogo: true, onClick: () => goTo('home') }
           );
           break;
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
 
+        case 'demo':
+          const demoInfo = CONTENT.demoDetail[app.selectedDemoIndex];
+          buttons.push(
+            { label: demoInfo.location, onClick: () => {}, inactive: true },
+            { label: demoInfo.presenter, onClick: () => {}, inactive: true },
+            { label: demoInfo.duration, onClick: () => {}, inactive: true },
+            {
+              label: CONTENT.sessions[0].label,
+              onClick: () => app.selectTimeslot(0),
+              selectedRed: app.selectedTimeslot === 0,
+              inactive: false
+            },
+            {
+              label: CONTENT.sessions[1].label,
+              onClick: () => app.selectTimeslot(1),
+              selectedRed: app.selectedTimeslot === 1,
+              inactive: false
+            },
+            {
+              label: 'Book!',
+              onClick: () => app.bookDemo(),
+              active: app.selectedTimeslot !== null,
+              inactive: app.selectedTimeslot === null
+            },
+            {
+              label: '<',
+              isBackBtn: true,
+              onClick: () => goTo('program'),
+              inactive: false
+            },
+            {
+              isLogo: true,
+              onClick: () => goTo('home')
+            }
+          );
+          break;
               
       /*  case 'demo':
           const demoInfo = CONTENT.demoDetail[app.selectedDemoIndex];
