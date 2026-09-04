@@ -564,6 +564,53 @@
 
       },
 
+      questions: [
+
+      {
+        question: "Avec un Range Extender (batterie 28 kWh) et une recharge par jour, quelle proportion de leurs journées les conducteurs moyens de Renault Austral pourraient-ils faire 100 % en électrique ?",
+        answerA: "69 %",
+        answerB: "81 %",
+        answerC: "92 %"
+      },
+    
+      {
+        question: "Quelles informations sur l’usage en électrique sont les plus demandées par les utilisateurs ?",
+        answerA: "L'état de santé batterie",
+        answerB: "La consommation lors des trajets",
+        answerC: "Le coût des charges"
+      },
+    
+      {
+        question: "Combien de véhicules thermiques Renault en Europe pourraient simuler leur usage réel en véhicule électrique ?",
+        answerA: "300 000",
+        answerB: "800 000",
+        answerC: "1 300 000"
+      },
+    
+      {
+        question: "Quel est le taux d'erreur sur les données ralentisseurs OSM observées sur une ville (Rouen) ?",
+        answerA: "25 %",
+        answerB: "40 %",
+        answerC: "55 %"
+      },
+    
+      {
+        question: "Selon la présentation, pourquoi ne pouvons-nous pas nous fier uniquement à notre propre opinion ?",
+        answerA: "Parce que nous ne sommes pas nos clients",
+        answerB: "Parce que les clients ne savent pas ce qu'ils veulent",
+        answerC: "Parce que les données remplacent totalement les retours utilisateurs"
+      },
+    
+      {
+        question: "Avant la digitalisation des livres blancs, où se trouvait principalement la connaissance Usage Client ?",
+        answerA: "Dans les calculateurs véhicules",
+        answerB: "Dans les documents PDF et dans la tête des experts",
+        answerC: "Dans les bases de données de simulation"
+      }
+    
+    ],
+        
+
       myQuiz: {
         title: ':> Geart Job! Here are your answers!',
         subtitle: ':> See you at 14:00 for The CarData prize session!<br>:> Hint: Go to CarData to find the way! B-)'
@@ -705,14 +752,36 @@
     }
 
     function renderQuestionPage(index) {
+    
+      const q = CONTENT.questions[index];
+    
       return `
-<span style="color: #ffffff;">
-          :> Q${index + 1}: Question Here.................
-<br>.................
-<br>
-          :> Please choose the answer below!
-</span>
-      `;
+    <span style="color: #ffffff;">
+    
+    :> Q${index + 1}/6
+    
+    <br><br>
+    
+    ${q.question}
+    
+    <br><br>
+    
+    A : ${q.answerA}
+    
+    <br><br>
+    
+    B : ${q.answerB}
+    
+    <br><br>
+    
+    C : ${q.answerC}
+    
+    <br><br>
+    
+    :> Please choose your answer below!
+    
+    </span>
+    `;
     }
 
     function renderMyDemosPage() {
@@ -1016,9 +1085,24 @@
             { label: `${app.currentQuestion + 1}/6`, onClick: () => {}, inactive: true },
             { label: ':)', onClick: () => {}, inactive: true },
             { label: 'Next!', onClick: () => app.nextQuestion(), active: app.selectedAnswer !== null, inactive: app.selectedAnswer === null },
-            { label: 'Answer1', onClick: () => app.selectAnswer(0), active: app.selectedAnswer === 0, inactive: false },
-            { label: 'Answer2', onClick: () => app.selectAnswer(1), active: app.selectedAnswer === 1, inactive: false },
-            { label: 'Answer3', onClick: () => app.selectAnswer(2), active: app.selectedAnswer === 2, inactive: false },
+            {
+              label: 'Réponse A',
+              onClick: () => app.selectAnswer(0),
+              active: app.selectedAnswer === 0,
+              inactive: false
+            },
+            {
+              label: 'Réponse B',
+              onClick: () => app.selectAnswer(1),
+              active: app.selectedAnswer === 1,
+              inactive: false
+            },
+            {
+              label: 'Réponse C',
+              onClick: () => app.selectAnswer(2),
+              active: app.selectedAnswer === 2,
+              inactive: false
+            },
             { label: '<', isBackBtn: true, onClick: () => goTo('quiz'), inactive: false },
             { isLogo: true, onClick: () => goTo('home') }
           );
