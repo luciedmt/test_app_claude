@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -397,8 +396,19 @@
 <div class="screen-content" id="mainContent"><div class="content-text" id="contentText"></div></div>
 <div class="keyboard" id="keyboard"></div>
 </div>
+/* ----------------------------------------------------------------------------------------------*/
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+/* ----------------------------------------------------------------------------------------------*/    
 <script>
-
+/* ----------------------------------------------------------------------------------------------*/
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const SUPABASE_URL = "https://kavyxpwfwxwxvjawqmwi.supabase.co";
+    const SUPABASE_KEY = "sb_publishable__7N-coS7EthfgyziZWoB-A_3tkDDBf4";
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+/* ----------------------------------------------------------------------------------------------*/
   if (!sessionStorage.getItem('initialReloadDone')) {
     sessionStorage.setItem('initialReloadDone', 'true');
     window.location.reload();
@@ -502,7 +512,21 @@
 
       ],
 
+
+      ////////////////////////////////////////////////////////////////////////////////////////
       sessions: [
+        {
+          label: '08 sept 12:15',
+          start: '2026-09-08T12:15:00'
+        },
+        {
+          label: '09 sept 12:15',
+          start: '2026-09-09T12:15:00'
+        }
+      ],
+      ///////////////////////////////////////////////////////////////////////////////////////
+        
+      /*sessions: [
 
         'Session 1',
         'Session 2',
@@ -516,7 +540,7 @@
         'Session 10',
         'Session 11',
         'Session 12'
-      ],
+      ],*/
 
       quiz: {
         title: ':> 2026 CarData Quiz!',
@@ -556,6 +580,9 @@
       selectedAnswer: null,
       selectedDemoIndex: null,
       currentQuestion: 0,
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      lastBooking: null,
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////////
       emailError: ''
 
     };
@@ -598,8 +625,21 @@
       }
       render();
     }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function renderEmailPage() {
+      return `
+        ${CONTENT.email.title}
+        <br>
+        ${CONTENT.email.subtitle}
+        <br>
+        <input type="email" id="emailInput" placeholder="name@email.com">
+        ${app.emailError ? `<div class="error-msg">${app.emailError}</div>` : ''}
+      `;
+    }
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+   /* function renderEmailPage() {
       return `
 <span style="color: #ffffff;">
 
@@ -615,7 +655,7 @@
 
       `;
 
-    }
+    }*/
 
     function renderHomePage() {
       return `<span style="color: #ffffff;">${CONTENT.home.title}</span>`;
@@ -623,11 +663,11 @@
 
     function renderProgramPage() {
       return `
-<span style="color: #ffffff;">
+        <span style="color: #ffffff;">
           ${CONTENT.program.title}
-<br>
+            <br>
           ${CONTENT.program.subtitle}
-</span>
+        </span>
       `;
 
     }
@@ -716,7 +756,19 @@
       `;
     }
 
+////////////////////////////////////////////////////////////////////////////////////
     function getDemoBookingInfo(demoIndex) {
+      const booking = app.bookings.find(b => b.demoIndex === demoIndex);
+      if (booking) {
+        return `${CONTENT.demoDetail[demoIndex].name}<br>${CONTENT.sessions[booking.timeslotIndex].label}`;
+      }
+      return `Demo${demoIndex + 1}`;
+    }
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+    
+  /*  function getDemoBookingInfo(demoIndex) {
       const booking = app.bookings.find(b => b.demoIndex === demoIndex);
       if (booking) {
         const demo = CONTENT.demoDetail[demoIndex];
@@ -729,7 +781,9 @@
 </span>`;
       }
       return `<span style="color: #ffffff;">Demo${demoIndex + 1}</span>`;
-    }
+    }*/
+
+    
     function getQuizAnswerInfo(questionIndex) {
       if (app.quizAnswers[questionIndex] !== undefined) {
         const answerLetter = String.fromCharCode(65 + app.quizAnswers[questionIndex]);
@@ -823,7 +877,23 @@
             { isLogo: true, onClick: () => goTo('home') }
           );
           break;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         case 'demo':
+          buttons.push(
+            { label: CONTENT.demoPageInfo.location, onClick: () => {}, inactive: true },
+            { label: CONTENT.demoPageInfo.presenter, onClick: () => {}, inactive: true },
+            { label: CONTENT.demoPageInfo.duration, onClick: () => {}, inactive: true },
+            { label: CONTENT.sessions[0].label, onClick: () => app.selectTimeslot(0), selectedRed: app.selectedTimeslot === 0, inactive: false },
+            { label: CONTENT.sessions[1].label, onClick: () => app.selectTimeslot(1), selectedRed: app.selectedTimeslot === 1, inactive: false },
+            { label: 'Book!', onClick: () => app.bookDemo(), active: app.selectedTimeslot !== null, inactive: app.selectedTimeslot === null },
+            { label: '<', isBackBtn: true, onClick: () => goTo('program'), inactive: false },
+            { isLogo: true, onClick: () => goTo('home') }
+          );
+          break;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+              
+      /*  case 'demo':
           const demoInfo = CONTENT.demoDetail[app.selectedDemoIndex];
           const demoSession1Index = demoInfo.sessionIndices[0];
           const demoSession2Index = demoInfo.sessionIndices[1];
@@ -837,7 +907,8 @@
             { label: '<', isBackBtn: true, onClick: () => goTo('program'), inactive: false },
             { isLogo: true, onClick: () => goTo('home') }
           );
-          break;
+          break;*/
+              
         case 'bookConfirm':
           buttons.push(
             { label: ':)', onClick: () => {}, inactive: true },
@@ -845,6 +916,22 @@
             { label: ':)', onClick: () => {}, inactive: true },
             { label: ':)', onClick: () => {}, inactive: true },
             { label: ':)', onClick: () => {}, inactive: true },
+
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            {
+              label: '📅 Outlook',
+              onClick: () => addToOutlook(
+                CONTENT.demoDetail[
+                  app.lastBooking.demoIndex
+                ].name,
+                CONTENT.sessions[
+                  app.lastBooking.timeslotIndex
+                ].start
+              ),
+              active: true,
+              inactive: false
+            },
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
             { label: 'Done!', onClick: () => goTo('myDemos'), active: true, inactive: false },
             { label: '<', isBackBtn: true, onClick: () => goTo('program'), inactive: false },
             { isLogo: true, onClick: () => goTo('home') }
@@ -992,6 +1079,37 @@
         goTo('bookConfirm');
       }
     };
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    app.bookings.push(booking);
+
+        const { data, error } = await supabaseClient
+          .from('bookings')
+          .insert({
+            email: app.email,
+            demo_index: app.selectedDemoIndex,
+            timeslot_index: app.selectedTimeslot
+          })
+          .select();
+
+        console.log("BOOKING DATA =", data);
+        console.log("BOOKING ERROR =", error);
+
+        await saveParticipant();
+        localStorage.setItem(
+          'bookings',
+          JSON.stringify(app.bookings)
+        );
+
+        app.lastBooking = {
+          demoIndex: app.selectedDemoIndex,
+          timeslotIndex: app.selectedTimeslot
+        };
+                
+        goTo('bookConfirm');
+      }
+    };
+ //////////////////////////////////////////////////////////////////////////////////////////////////////
  
     app.selectTimeslot = function(index) {
       playClickSound();
@@ -1060,6 +1178,9 @@
     app.nextQuestion = function() {
       if (app.selectedAnswer !== null) {
         app.quizAnswers[app.currentQuestion] = app.selectedAnswer;
+        ///////////////////////////////////////////////////////////////////////////////////
+        await saveParticipant();
+        /////////////////////////////////////////////////////////////////////////////////////
         localStorage.setItem('quizAnswers', JSON.stringify(app.quizAnswers));
         if (app.currentQuestion < 5) {
           goTo('question', app.currentQuestion + 1);
@@ -1068,6 +1189,34 @@
         }
       }
     };
+        /////////////////////////////////////////////////////////////////////////////////////
+
+    async function saveParticipant() {
+
+    if (!app.email) return;
+
+    const { data, error } = await supabaseClient
+        .from('participants')
+        .upsert(
+            {
+                email: app.email,
+                bookings: app.bookings,
+                quiz_answers: app.quizAnswers,
+                rating: app.ratingHearts.length,
+                updated_at: new Date().toISOString()
+            },
+            {
+                onConflict: 'email'
+            }
+        )
+        .select();
+
+    if (error) {
+        console.error("Erreur Supabase :", error);
+    }
+}
+
+        /////////////////////////////////////////////////////////////////////////////////////
 
     function render() {
       if (app.email === '' && app.currentPage !== 'email') {
