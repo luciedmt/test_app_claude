@@ -946,33 +946,48 @@
           break;*/
               
         case 'bookConfirm':
-          buttons.push(
-            { label: ':)', onClick: () => {}, inactive: true },
-            { label: ':)', onClick: () => {}, inactive: true },
-            { label: ':)', onClick: () => {}, inactive: true },
-            { label: ':)', onClick: () => {}, inactive: true },
-            { label: ':)', onClick: () => {}, inactive: true },
-
-         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            {
-              label: '📅 Outlook',
-              onClick: () => addToOutlook(
-                CONTENT.demoDetail[
-                  app.lastBooking.demoIndex
-                ].name,
-                CONTENT.sessions[
-                  app.lastBooking.timeslotIndex
-                ].start
-              ),
-              active: true,
-              inactive: false
-            },
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            { label: 'Done!', onClick: () => goTo('myDemos'), active: true, inactive: false },
-            { label: '<', isBackBtn: true, onClick: () => goTo('program'), inactive: false },
-            { isLogo: true, onClick: () => goTo('home') }
-          );
-          break;
+            buttons.push(
+              { label: ':)', onClick: () => {}, inactive: true },
+              { label: ':)', onClick: () => {}, inactive: true },
+              { label: ':)', onClick: () => {}, inactive: true },
+            
+              { label: ':)', onClick: () => {}, inactive: true },
+            
+              {
+                label: '📅 Outlook',
+                onClick: () => addToOutlook(
+                  CONTENT.demoDetail[
+                    app.lastBooking.demoIndex
+                  ].name,
+                  CONTENT.sessions[
+                    app.lastBooking.timeslotIndex
+                  ].start
+                ),
+                active: true,
+                inactive: false
+              },
+            
+              {
+                label: 'Done!',
+                onClick: () => goTo('myDemos'),
+                active: true,
+                inactive: false
+              },
+            
+              {
+                label: '<',
+                isBackBtn: true,
+                onClick: () => goTo('program'),
+                inactive: false
+              },
+            
+              {
+                isLogo: true,
+                onClick: () => goTo('home')
+              }
+            );
+            break;
+              
         case 'quiz':
           buttons.push(
             { label: 'Q1', onClick: () => goTo('question', 0), inactive: false },
