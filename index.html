@@ -400,15 +400,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 /* ----------------------------------------------------------------------------------------------*/    
 <script>
-/* ----------------------------------------------------------------------------------------------*/
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const SUPABASE_URL = "https://kavyxpwfwxwxvjawqmwi.supabase.co";
-    const SUPABASE_KEY = "sb_publishable__7N-coS7EthfgyziZWoB-A_3tkDDBf4";
-    const supabaseClient = supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
-/* ----------------------------------------------------------------------------------------------*/
+
   if (!sessionStorage.getItem('initialReloadDone')) {
     sessionStorage.setItem('initialReloadDone', 'true');
     window.location.reload();
@@ -418,6 +410,14 @@
     // ========================================
 
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    /* ----------------------------------------------------------------------------------------------*/
+    const SUPABASE_URL = "https://kavyxpwfwxwxvjawqmwi.supabase.co";
+    const SUPABASE_KEY = "sb_publishable__7N-coS7EthfgyziZWoB-A_3tkDDBf4";
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+/* ----------------------------------------------------------------------------------------------*/
 
     function playClickSound() {
         try {
